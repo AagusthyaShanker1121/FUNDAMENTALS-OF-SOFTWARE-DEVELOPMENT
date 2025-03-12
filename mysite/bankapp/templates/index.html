@@ -8,4 +8,11 @@
     <li>That's right, a jillion.</li>
 </ul>
 
+{% if messages %}
+    <ul class="messages" style="color: green;">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
 {% endblock %}

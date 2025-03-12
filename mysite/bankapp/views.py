@@ -8,4 +8,4 @@ def index(request):
 
 @login_required
 def home(request):
-    return HttpResponse('<h1>You made it.</h1>')
+    return render(request, 'home.html')
