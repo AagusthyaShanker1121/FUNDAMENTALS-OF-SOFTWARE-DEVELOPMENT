@@ -24,6 +24,9 @@
     </div>
     <div id="body">
         <h2 id="content-header">{{ content_header }}</h2>
+        {% if error %}
+            <p style="color: red;">{{ error }}</p>
+        {% endif %}
         {% block content %}{% endblock %}
     </div>
 </body>
