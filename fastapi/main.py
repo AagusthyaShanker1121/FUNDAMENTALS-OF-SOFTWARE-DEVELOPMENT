@@ -23,15 +23,3 @@ async def home(request: Request):
 
 app.include_router(auth.router)
 
-
-
-# Setting up hot reload
-# hotreload = arel.HotReload(
-#     paths=[
-#         arel.Path(
-#             "./server/data",
-#             on_reload=[home, login, register]
-#                    ),
-#         arel.Path("./server/static"),
-#     ],
-# )
