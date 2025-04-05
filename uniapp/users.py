@@ -1,4 +1,5 @@
 import re
+import pandas as pd
 
 class Person:
     def __init__(self, name, email, password):
@@ -61,15 +62,18 @@ class Student(Person):
     def enrol(self):
         return "ENROL"
     
-class Admin:
-    def __init__(self):
-        self.admins = pd.read_excel('bankapp/startup_info.xlsx', dtype=str)['Admin']
-        self.admins = list(self.admins[self.admins.notna()])
-        self.admin_pws = pd.read_excel('bankapp/startup_info.xlsx', dtype=str)['Admin_PW']
-        self.admin_pws = list(self.admin_pws[self.admin_pws.notna()])
+class Admin(Person):
+    def __init__(self, name, email, password):
+        super().__init__(name, email, password) # This retains all original functions in the parents constructor class.
+        print(f"Student created! Name: {self.name}. Email: {self.email}.")
  
 def register_student(name, email, password):
     try:
         return Student(name, email, password)
     except ValueError as e:
         print(f"Error: {e}")
+
+def load_admins():
+    credentials = pd.read_excel('uniapp/startup_info.xlsx', dtype=str)[['Admin', 'Admin_PW']]
+    credentials = credentials.dropna()
+    return credentials

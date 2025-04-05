@@ -1,5 +1,6 @@
 import pandas as pd
 from pathlib import Path
+from users import Student
 
 class Course:
     def __init__(self, name, university):
@@ -31,5 +32,5 @@ class Database:
 
 
 def load_courses():
-    return list(pd.read_excel('bankapp/startup_info.xlsx')['Course'])
+    return list(pd.read_excel('uniapp/startup_info.xlsx')['Course'])
   
