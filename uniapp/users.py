@@ -92,6 +92,7 @@ def register_student(db, name, email, password):
         print(f"Error: {e}")        
     return None
 
+
 def load_admins():
     credentials = pd.read_excel('uniapp/startup_info.xlsx', dtype=str)[['Admin', 'Admin_PW']]
     credentials = credentials.dropna()

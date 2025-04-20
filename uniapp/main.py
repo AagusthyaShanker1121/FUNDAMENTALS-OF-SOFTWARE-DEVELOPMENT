@@ -1,5 +1,6 @@
-from users import Student, Admin, register_student, load_admins
-from utils import Database, Course, Menu, load_courses
+from users import load_admins
+from utils import Menu, load_courses
+from database import Database
 
 def startup():
     courses = load_courses()
