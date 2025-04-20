@@ -8,14 +8,10 @@ class Person:
         if not self.validatePassword(password):
             raise ValueError("Invalid password format")
         
-        self.id = Person.generate_id()
         self.name = name
         self.email = email # How do we stop from instantiating this stragight away
         self.password = password
 
-    def generate_id():
-        return "Id"
-    
     def setName(self, new_name):
         if new_name:
             self.name = new_name
@@ -55,24 +51,46 @@ class Person:
         ## TO BE FINISHED
 
 class Student(Person):
-    def __init__(self, name, email, password):
+    def __init__(self, name, email, password, id=None): 
         super().__init__(name, email, password) # This retains all original functions in the parents constructor class.
-        print(f"Student created! Name: {self.name}. Email: {self.email}.")
-        # Save data into db file.
+        self.id = id  # Initialize the id attribute
+        print(f"Student created! Name: {self.name}, Email: '{self.email}'.")
+        # Save data into db file.        
+
+    def set_id(self, id):
+        self.id = id
+        return self
+
+    @classmethod
+    def from_dict(cls, data):
+        student = cls(**data)
+        return student
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'email': self.email,
+            'password': self.password
+        }
 
     def enrol(self):
         return "ENROL"
-    
+
 class Admin(Person):
     def __init__(self, name, email, password):
         super().__init__(name, email, password) # This retains all original functions in the parents constructor class.
         print(f"Student created! Name: {self.name}. Email: {self.email}.")
  
-def register_student(name, email, password):
+def register_student(db, name, email, password):
     try:
-        return Student(name, email, password)
+        student = Student(name, email, password)
+        student.set_id(db.generate_student_id())
+        db.upsert_student(student)
+        print(f"Student registered succesfully.")
     except ValueError as e:
-        print(f"Error: {e}")
+        print(f"Error: {e}")        
+    return None
 
 def load_admins():
     credentials = pd.read_excel('uniapp/startup_info.xlsx', dtype=str)[['Admin', 'Admin_PW']]
