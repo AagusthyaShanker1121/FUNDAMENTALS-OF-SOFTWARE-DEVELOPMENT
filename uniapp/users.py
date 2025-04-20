@@ -58,6 +58,7 @@ class Student(Person):
     def __init__(self, name, email, password):
         super().__init__(name, email, password) # This retains all original functions in the parents constructor class.
         print(f"Student created! Name: {self.name}. Email: {self.email}.")
+        # Save data into db file.
 
     def enrol(self):
         return "ENROL"
