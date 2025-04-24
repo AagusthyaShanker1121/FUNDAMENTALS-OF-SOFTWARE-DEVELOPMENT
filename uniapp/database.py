@@ -15,13 +15,13 @@ class Database:
         if self.db_file_path.is_file():
             with open(self.db_file_path, "r") as f:
                 file_contents = f.read()
-        if file_contents and file_contents != "":
-            self.data = json.loads(f.read())
-        else:
-            self.data = {
-                'students': None,
-                'admins': None
-            }
+                if file_contents and file_contents != "":
+                    self.data = json.loads(file_contents)
+                else:
+                    self.data = {
+                    'students': None,
+                    'admins': None
+                }
         if self.data['students'] is not None:
             for student in self.data.get('students', []):
                 self.students[student['id']] = Student.from_dict(student)

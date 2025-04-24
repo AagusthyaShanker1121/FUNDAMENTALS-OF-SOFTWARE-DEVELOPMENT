@@ -4,11 +4,8 @@ from database import Database
 
 def startup():
     courses = load_courses()
-    # print(f"Courses: {courses}")
     admins = load_admins()
-    # print(f"Admins: {admins}")
     return courses, admins
-
 
 def __main__():
     courses, admins = startup()
