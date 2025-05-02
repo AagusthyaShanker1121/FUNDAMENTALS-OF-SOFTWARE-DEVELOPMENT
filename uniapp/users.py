@@ -76,6 +76,9 @@ class Student(Person):
 
     def enrol(self):
         return "ENROL"
+    
+    def unenrol(self):
+        return "UNENROL"
 
 class Admin(Person):
     def __init__(self, name, email, password):
