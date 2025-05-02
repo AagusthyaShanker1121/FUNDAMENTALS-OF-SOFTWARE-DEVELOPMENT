@@ -22,19 +22,25 @@ class Database:
         if self.db_file_path.is_file():
             with open(self.db_file_path, "r") as f:
                 file_contents = f.read()
-                # Initialize self.data with all current data
-                # Inside the students.data file.
-                if file_contents and file_contents != "":
-                    self.data = json.loads(file_contents)
-                else:
-                    self.data = {
-                    'students': None,
-                    'admins': None
-                }
+        # Initialize self.data with all current data
+        # Inside the students.data file.
+        if file_contents and file_contents != "":
+            self.data = json.loads(file_contents)
+            print(file_contents)
+        else:
+            self.data = {
+            'students': None,
+            'admins': None
+            }
+        self.load_students()
+        # self.load_admins()
+    
+    def load_students(self):
         if self.data['students'] is not None:
             for student in self.data.get('students', []):
                 self.students[student['id']] = Student.from_dict(student)
         else:
+            # This is required otherwise the students object does not reset after deleting data.
             self.students = {}
         # Admin load needs to be completed.
         # for admin in self.data.get('admins', []):

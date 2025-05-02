@@ -1,9 +1,9 @@
 from users import load_admins
-from utils import Menu, load_courses
+from utils import Menu, Course
 from database import Database
 
 def startup():
-    courses = load_courses()
+    courses = Course.load_courses()
     admins = load_admins()
     return courses, admins
 

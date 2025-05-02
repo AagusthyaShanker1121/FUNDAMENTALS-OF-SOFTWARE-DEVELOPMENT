@@ -1,6 +1,6 @@
 import pandas as pd
 from pathlib import Path
-from users import register_student
+from users import Student
 
 class Course:
     def __init__(self, name, university):
@@ -8,6 +8,13 @@ class Course:
         self.name = name
         self.university = university
     
+    @staticmethod
+    def load_courses():
+        """
+        Instantiates some courses so we don't need to enter them manually.
+        """
+        return list(pd.read_excel('uniapp/startup_info.xlsx')['Course'])
+
     def getName(self):
         return self.name
     
@@ -55,7 +62,6 @@ class Menu:
                     pass
             inpt = self.prompt_input(options)
 
-
     def student_menu(self):
         """
         In this function, we have all of the underlying functionality for the student.
@@ -81,22 +87,16 @@ class Menu:
             match inpt:
                 case "r":
                     details = [input("Enter " + x + ": ") for x in ["name", "email", "password"]]
-                    student = register_student(self.db, details[0], details[1], details[2])
-                    self.db.upsert_student(student)
+                    Student.register_student(self.db, details[0], details[1], details[2])
                 case "s":
                     pass
                 case "a":
                     pass
                 case "p":
+                    # We can delete this after, just for debugging.
                     self.db.print_data()
                 case "d":
                     self.db.delete_data()
                 case _:
                     pass
             inpt = self.prompt_input(options)
-
-def load_courses():
-    """
-    Instantiates some courses so we don't need to enter them manually.
-    """
-    return list(pd.read_excel('uniapp/startup_info.xlsx')['Course'])

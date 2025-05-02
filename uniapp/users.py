@@ -57,6 +57,17 @@ class Student(Person):
         print(f"Student created! Name: {self.name}, Email: '{self.email}'.")
         # Save data into db file.        
 
+    @classmethod
+    def register_student(cls, db, name, email, password):
+        try:
+            student = cls(name, email, password)
+            student.set_id(db.generate_student_id())
+            db.upsert_student(student)
+            print(f"Student registered succesfully.")
+        except ValueError as e:
+            print(f"Error: {e}")        
+        return None
+
     def set_id(self, id):
         self.id = id
         return self
@@ -84,17 +95,6 @@ class Admin(Person):
     def __init__(self, name, email, password):
         super().__init__(name, email, password) # This retains all original functions in the parents constructor class.
         print(f"Student created! Name: {self.name}. Email: {self.email}.")
- 
-def register_student(db, name, email, password):
-    try:
-        student = Student(name, email, password)
-        student.set_id(db.generate_student_id())
-        db.upsert_student(student)
-        print(f"Student registered succesfully.")
-    except ValueError as e:
-        print(f"Error: {e}")        
-    return None
-
 
 def load_admins():
     credentials = pd.read_excel('uniapp/startup_info.xlsx', dtype=str)[['Admin', 'Admin_PW']]
