@@ -1,6 +1,6 @@
 from users import load_admins
 from utils import Menu, Course
-from database import Database
+from db_utils import Database
 
 def startup():
     courses = Course.load_courses()

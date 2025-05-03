@@ -1,6 +1,6 @@
 from uniapp.users import load_admins
 from uniapp.utils import Menu, load_courses
-from uniapp.database import Database
+from uniapp.db_utils import Database
 
 def startup():
     courses = load_courses()

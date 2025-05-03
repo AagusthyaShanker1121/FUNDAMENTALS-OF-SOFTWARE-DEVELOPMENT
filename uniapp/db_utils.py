@@ -22,8 +22,6 @@ class Database:
         if self.db_file_path.is_file():
             with open(self.db_file_path, "r") as f:
                 file_contents = f.read()
-        # Initialize self.data with all current data
-        # Inside the students.data file.
         if file_contents and file_contents != "":
             self.data = json.loads(file_contents)
             print(file_contents)
@@ -32,21 +30,17 @@ class Database:
             'students': None,
             'admins': None
             }
-        self.load_students()
-        # self.load_admins()
-    
-    def load_students(self):
         if self.data['students'] is not None:
             for student in self.data.get('students', []):
                 self.students[student['id']] = Student.from_dict(student)
         else:
             # This is required otherwise the students object does not reset after deleting data.
             self.students = {}
+        # self.load_admins()
         # Admin load needs to be completed.
         # for admin in self.data.get('admins', []):
         #     self.admins = [Admin.from_dict(admin)] 
-        print(self.data)
-    
+
     def save_data(self):
         """
         Creates a dictionary with only two keys ("students" & "admins")
@@ -76,25 +70,7 @@ class Database:
             self.load_data()
             print("Data deleted succesfully.")
 
-    def generate_student_id(self):
-        """
-        This function exists on the database class because it requires 
-        access to all of the existing ids in the database. 
-        If this function existed on the student class it would require 
-        the student class to have access to the database while instantiating 
-        which would be messy. 
-        This is where StudentController would make sense to use.
-        """
-        id = random.randint(1, int(1e6 - 1))
-        while id in self.students.keys():
-            # Generate a new int if id already exists
-            id = random.randint(1, int(1e6 - 1))
-        id = str(id)
-        while len(id) < 6:
-            id = "0" + id
-        return id
-
-    def upsert_student(self, student):
+    def add_student(self, student):
         """
         The term 'upsert' is used here, because what this function does is:
         If the student exists in the database, it replaces the existing data.
@@ -107,3 +83,47 @@ class Database:
     
     def print_data(self):
         print(f"Students:  {[student.name for student in self.students.values()]}")
+
+class StudentController:
+    def __init__(self, db):
+        self.db = db
+
+    def register_student(self, name, email, password):
+        try:
+            self.validate_unique_email(email)
+            student = Student(name, email, password)
+            student.set_id(self.generate_student_id())
+            self.db.add_student(student)
+            print(f"Student registered successfully.")
+        except ValueError as e:
+            print(f"Error: {e}")        
+        return None
+    
+    def validate_unique_email(self, email):
+        # Validate email does not exist.
+        all_students = self.get_all_students()
+        if email in [student.get_email() for student in all_students.values()]:
+            raise ValueError("Email already exists.")
+
+    def generate_student_id(self):
+        """
+        This function works well as an instance method since it uses the database.
+        """
+        id = random.randint(1, int(1e6 - 1))
+        while id in self.db.students.keys():
+            # Generate a new int if id already exists
+            id = random.randint(1, int(1e6 - 1))
+        id = str(id)
+        while len(id) < 6:
+            id = "0" + id
+        return id
+    
+    def get_student(self, student_id):
+        if student_id in self.db.students.keys():
+            return self.db.students[student_id]
+        else:
+            print(f"Student id does not exist: {student_id}")
+    
+    def get_all_students(self):
+        return self.db.students
+

@@ -1,6 +1,7 @@
 import pandas as pd
 from pathlib import Path
 from users import Student
+from db_utils import StudentController
 
 class Course:
     def __init__(self, name, university):
@@ -21,6 +22,48 @@ class Course:
     def getUniversity(self):
         return self.university
 
+class Enrolment:
+    def __init__(self, student, course, semester, student_controller):
+        self.assign_id(student_controller)
+        self.generate_mark()
+        self.generate_grade()
+        pass
+
+    def assign_id(self, student_controller):
+        """
+        How do we ensure a unique id?
+        We need to access the db to return all current enrolment ids.
+        This retrieves all enrolment ids by cycling
+        Two nested loops, for each student, grab each enrolment id.
+        """
+        all_students = student_controller.get_all_students()
+        all_enrolment_ids = []
+        for curr_student in all_students.values():
+            if len(curr_student.get_enrolments()) > 0:
+                for curr_enrolment in curr_student.get_enrolments():
+                    all_enrolment_ids.append(curr_enrolment.get_id())
+        # Now assign an id not in all_enrolment_ids.
+
+    def generate_mark(self):
+        """
+        
+        """
+        self.mark = ""
+        return None
+    
+    def generate_grade(self):
+        self.grade = ""
+        pass
+
+    def get_id(self):
+        return self.id
+
+    def get_mark(self):
+        return self.mark
+    
+    def get_grade(self):
+        return self.grade
+
 class Menu:
     def __init__(self, db):
         """
@@ -29,6 +72,8 @@ class Menu:
         and the database. This is the menu class atm but we could change it.
         """
         self.db = db
+        self.student_controller = StudentController(self.db)
+
         return None
     
     @staticmethod
@@ -87,7 +132,7 @@ class Menu:
             match inpt:
                 case "r":
                     details = [input("Enter " + x + ": ") for x in ["name", "email", "password"]]
-                    Student.register_student(self.db, details[0], details[1], details[2])
+                    self.student_controller.register_student(details[0], details[1], details[2])
                 case "s":
                     pass
                 case "a":

@@ -1,5 +1,5 @@
 
-n = 29
+curr_list = []
 
-x = sum([int(x) for x in str(n)])
-
+print(curr_list.extend([1, 2, 3]))
+print(curr_list)
