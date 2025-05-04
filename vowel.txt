@@ -1,0 +1,48 @@
+String: sklkdflskjdflsdjf
+ Vowel Frequencies:
+ a --> 0
+A --> 0
+e --> 0
+E --> 0
+o --> 0
+O --> 0
+i --> 0
+I --> 0
+u --> 0
+U --> 0
+String: aaaa
+ Vowel Frequencies:
+ a --> 4
+A --> 0
+e --> 0
+E --> 0
+o --> 0
+O --> 0
+i --> 0
+I --> 0
+u --> 0
+U --> 0
+String: iiiii
+ Vowel Frequencies:
+ a --> 0
+A --> 0
+e --> 0
+E --> 0
+o --> 0
+O --> 0
+i --> 5
+I --> 0
+u --> 0
+U --> 0
+String: oooo
+ Vowel Frequencies:
+ a --> 0
+A --> 0
+e --> 0
+E --> 0
+o --> 4
+O --> 0
+i --> 0
+I --> 0
+u --> 0
+U --> 0
