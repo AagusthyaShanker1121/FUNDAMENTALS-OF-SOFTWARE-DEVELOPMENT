@@ -1,5 +1,4 @@
 
-curr_list = []
-
-print(curr_list.extend([1, 2, 3]))
-print(curr_list)
+curr_list = {5: 'a', '67': 6}
+new_list = {}
+none_list = None

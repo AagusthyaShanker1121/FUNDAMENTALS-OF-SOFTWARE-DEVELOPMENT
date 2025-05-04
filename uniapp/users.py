@@ -34,6 +34,12 @@ class Person:
     def get_email(self):
         return self.email
 
+    def check_password_match(self, pw_to_check):
+        if pw_to_check == self.password:
+            return True
+        else:
+            return False
+
     @staticmethod
     def validate_email(email):
         email = str(email).lower()

@@ -87,7 +87,22 @@ class Database:
 class StudentController:
     def __init__(self, db):
         self.db = db
+        self.logged_in_student = None
 
+    def login(self, email, password):
+        target_student = self.get_student(email=email)
+        if target_student is not None:
+            if target_student.check_password_match(password):
+                self.logged_in_student = target_student
+                print(f"Student Log In Succesful: Student: {target_student.get_name()}, Email: {target_student.get_email()}")
+            else:
+                raise ValueError("Password does not match.")
+        else:
+            raise ValueError("Email does not exist.")
+
+    def logout(self):
+        self.logged_in_student = None
+    
     def register_student(self, name, email, password):
         try:
             self.validate_unique_email(email)
@@ -118,11 +133,22 @@ class StudentController:
             id = "0" + id
         return id
     
-    def get_student(self, student_id):
-        if student_id in self.db.students.keys():
+    def get_student(self, student_id=None, email=None):
+        """
+        This function checks if there are no students at all as an edge case first.
+        Then it will try and find the student by student id first, then email.
+        """
+        if self.db.students in [None, {}]:
+            raise LookupError("Cannot get student. No students exist in database.")
+        if student_id and student_id in self.db.students.keys():
             return self.db.students[student_id]
+        elif email:
+            for curr_id in self.db.students.keys():
+                if self.db.students[curr_id].get_email() == email:
+                    return self.db.students[curr_id]
         else:
             print(f"Student id does not exist: {student_id}")
+            return None  
     
     def get_all_students(self):
         return self.db.students
