@@ -1,2 +1,4 @@
 This is a random text file version 2.
 This is from new feature 2 - version 1.
+This is from new_feature branch.
+
