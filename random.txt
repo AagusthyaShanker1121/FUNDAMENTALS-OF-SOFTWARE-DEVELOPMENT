@@ -1,1 +1,2 @@
 This is a random text file version 2.
+I am from new_feature_3 branch. And this is version 1 of new_feature_branch_3.
