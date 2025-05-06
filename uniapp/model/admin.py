@@ -31,16 +31,27 @@ class Admin(Person):
 
         pass
 
-    def delete_student(self, student) -> None:
-        """
-        Delete a particular student or a group of students that may include the entire class.
-
-        Parameters
-        ---
-        student: List[Student] | Student
-        """
-        pass
-
+    def delete_individual_student(self, student_id: str) -> None:
+        inpt = input("Enter the student ID: ")
+        self.db.load_data()
+        
+        for student in self.students:
+            if inpt == student["id"]:
+                self.students.remove(student)
+                self.save_data()
+                print(f"Student {student_id} deleted successfully.")
+                return
+        
+        print(f"Student {inpt} not found.")
+        
+    def clear_all_students(self) -> None:
+        confirmation = input("Are you sure you want to delete all data? (y/n): ")
+        if confirmation == "y":
+            with open(self.db_file_path, "w") as f:
+                f.write("")
+            self.load_data()
+            print("Data deleted successfully.")
+        
     def view_students(self, by=None) -> None:
         """
         Displays all enrolled students 
