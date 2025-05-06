@@ -1,10 +1,10 @@
 from pathlib import Path
 import json
-import random
-from users import Student, Admin
+from model.student import Student
+from model.admin import Admin
 
 class Database:
-    db_file_path = Path('uniapp/Students.data')
+    db_file_path = Path('uniapp/data/Students.data')
     
     def __init__(self):
         self.students = {}
@@ -84,72 +84,22 @@ class Database:
     def print_data(self):
         print(f"Students:  {[student.name for student in self.students.values()]}")
 
-class StudentController:
-    def __init__(self, db):
-        self.db = db
-        self.logged_in_student = None
-
-    def login(self, email, password):
-        target_student = self.get_student(email=email)
-        if target_student is not None:
-            if target_student.check_password_match(password):
-                self.logged_in_student = target_student
-                print(f"Student Log In Succesful: Student: {target_student.get_name()}, Email: {target_student.get_email()}")
-            else:
-                raise ValueError("Password does not match.")
-        else:
-            raise ValueError("Email does not exist.")
-
-    def logout(self):
-        self.logged_in_student = None
-    
-    def register_student(self, name, email, password):
-        try:
-            self.validate_unique_email(email)
-            student = Student(name, email, password)
-            student.set_id(self.generate_student_id())
-            self.db.add_student(student)
-            print(f"Student registered successfully.")
-        except ValueError as e:
-            print(f"Error: {e}")        
-        return None
-    
-    def validate_unique_email(self, email):
-        # Validate email does not exist.
-        all_students = self.get_all_students()
-        if email in [student.get_email() for student in all_students.values()]:
-            raise ValueError("Email already exists.")
-
-    def generate_student_id(self):
-        """
-        This function works well as an instance method since it uses the database.
-        """
-        id = random.randint(1, int(1e6 - 1))
-        while id in self.db.students.keys():
-            # Generate a new int if id already exists
-            id = random.randint(1, int(1e6 - 1))
-        id = str(id)
-        while len(id) < 6:
-            id = "0" + id
-        return id
-    
     def get_student(self, student_id=None, email=None):
         """
         This function checks if there are no students at all as an edge case first.
         Then it will try and find the student by student id first, then email.
         """
-        if self.db.students in [None, {}]:
+        if self.students in [None, {}]:
             raise LookupError("Cannot get student. No students exist in database.")
-        if student_id and student_id in self.db.students.keys():
-            return self.db.students[student_id]
+        if student_id and student_id in self.students.keys():
+            return self.students[student_id]
         elif email:
-            for curr_id in self.db.students.keys():
-                if self.db.students[curr_id].get_email() == email:
-                    return self.db.students[curr_id]
+            for curr_id in self.students.keys():
+                if self.students[curr_id].get_email() == email:
+                    return self.students[curr_id]
         else:
             print(f"Student id does not exist: {student_id}")
             return None  
     
     def get_all_students(self):
-        return self.db.students
-
+        return self.students

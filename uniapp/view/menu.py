@@ -1,83 +1,16 @@
-import pandas as pd
-from random import randint
-from db_utils import StudentController
-
-class Course:
-    def __init__(self, name, university):
-        self.id = self.generate_id()
-        self.name = name
-        self.university = university
-    
-    @staticmethod
-    def load_courses():
-        """
-        Instantiates some courses so we don't need to enter them manually.
-        """
-        return list(pd.read_excel('uniapp/startup_info.xlsx')['Course'])
-
-    def getName(self):
-        return self.name
-    
-    def getUniversity(self):
-        return self.university
-
-class Enrolment:
-    def __init__(self, student, course, semester, student_controller):
-        self.assign_id(student_controller)
-        self.generate_mark()
-        self.generate_grade()
-        pass
-
-    def assign_id(self, student_controller):
-        """
-        This retrieves all enrolment ids to ensure a unique id by cycling
-        two nested loops, for each student, grab each enrolment id.
-        """
-        all_students = student_controller.get_all_students()
-        all_enrolment_ids = []
-        for curr_student in all_students.values():
-            if len(curr_student.get_enrolments()) > 0:
-                for curr_enrolment in curr_student.get_enrolments():
-                    all_enrolment_ids.append(curr_enrolment.get_id())
-        # Now assign an id not in all_enrolment_ids.
-        while new_id is None or new_id in all_enrolment_ids:
-            new_id = randint(1, 400000)
-        # Pad the new id out to 6 characters ie; 000001
-        while len(new_id) < 6:
-            new_id = "0" + new_id
-        return new_id
-
-    def generate_mark(self):
-        """
-        
-        """
-        self.mark = ""
-        return None
-    
-    def generate_grade(self):
-        self.grade = ""
-        pass
-
-    def get_id(self):
-        return self.id
-
-    def get_mark(self):
-        return self.mark
-    
-    def get_grade(self):
-        return self.grade
+from controller.student_controller import StudentController
 
 class Menu:
     def __init__(self, db):
         """
         The db object is required in the menu class because
         There needs to be an intermediary object between the users input
-        and the database. This is the menu class atm but we could change it.
+        and the database.
+        
+        This is the menu class atm but we could change it.
         """
         self.db = db
         self.student_controller = StudentController(self.db)
-
-        return None
     
     @staticmethod
     def prompt_input(options):
@@ -139,7 +72,7 @@ class Menu:
                     details = [input("Enter " + x + ": ") for x in ["name", "email", "password"]]
                     self.student_controller.register_student(details[0], details[1], details[2])
                 case "s":
-                    pass
+                    print(self.student_controller.get_all_students())
                 case "a":
                     pass
                 case "p":

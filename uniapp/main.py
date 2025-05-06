@@ -1,6 +1,7 @@
-from users import load_admins
-from utils import Menu, Course
-from db_utils import Database
+from model.admin import load_admins
+from model.course import Course
+from model.database import Database
+from view.menu import Menu
 
 def __main__():
     # This info is used to instantiate courses and admins for debugging
