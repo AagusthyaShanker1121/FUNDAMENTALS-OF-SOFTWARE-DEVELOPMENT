@@ -1,5 +1,5 @@
 .*
 !.gitignore
-.pyc
+*.pyc
 tutorials
-bankapp
+__pycache__

@@ -89,17 +89,19 @@ class Database:
         This function checks if there are no students at all as an edge case first.
         Then it will try and find the student by student id first, then email.
         """
-        if self.students in [None, {}]:
-            raise LookupError("Cannot get student. No students exist in database.")
-        if student_id and student_id in self.students.keys():
-            return self.students[student_id]
-        elif email:
-            for curr_id in self.students.keys():
-                if self.students[curr_id].get_email() == email:
-                    return self.students[curr_id]
-        else:
-            print(f"Student id does not exist: {student_id}")
-            return None  
+        try:
+            if self.students in [None, {}]:
+                raise ValueError("Cannot get student. No students exist in database.")
+            if student_id and student_id in self.students.keys():
+                return self.students[student_id]
+            elif email:
+                for curr_id in self.students.keys():
+                    if self.students[curr_id].get_email() == email:
+                        return self.students[curr_id]
+            else:
+                print(f"Student id does not exist: {student_id}")
+        except ValueError as e:
+            print(f"Error: {e}")
     
     def get_all_students(self):
         return self.students

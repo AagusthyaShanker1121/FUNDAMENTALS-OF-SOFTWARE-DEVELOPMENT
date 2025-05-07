@@ -8,14 +8,17 @@ class StudentController:
 
     def login(self, email, password):
         target_student = self.db.get_student(email=email)
-        if target_student is not None:
+        if target_student is None:
+            print(f"Email Not Found: {email}")
+            return False
+        else:
             if target_student.check_password_match(password):
                 self.logged_in_student = target_student
-                print(f"Student Log In Succesful: Student: {target_student.get_name()}, Email: {target_student.get_email()}")
+                print(f"Student Log In Successful: Student: {target_student.get_name()}, Email: {target_student.get_email()}")
+                return True  # Login successful
             else:
-                raise ValueError("Password does not match.")
-        else:
-            raise ValueError("Email does not exist.")
+                print("Error: Incorrect password.")
+                return False  # Expected failure: incorrect password
 
     def logout(self):
         self.logged_in_student = None
@@ -49,4 +52,5 @@ class StudentController:
         while len(id) < 6:
             id = "0" + id
         return id
-    
+
+

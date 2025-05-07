@@ -37,13 +37,13 @@ class Menu:
                     # admin_menu()
                     pass
                 case "S":
-                    self.student_menu()
+                    self.initial_student_menu()
                     pass
                 case _:
                     pass
             inpt = self.prompt_input(options)
 
-    def student_menu(self):
+    def initial_student_menu(self):
         """
         In this function, we have all of the underlying functionality for the student.
         I've managed to get registering down to 3 lines so if we can keep the rest of the
@@ -67,7 +67,8 @@ class Menu:
             match inpt:
                 case "l":
                     details = [input("Enter " + x + ": ") for x in ["email", "password"]]
-                    self.student_controller.login(details[0], details[1])
+                    if self.student_controller.login(details[0], details[1]):
+                        self.student_logged_in_menu()
                 case "r":
                     details = [input("Enter " + x + ": ") for x in ["name", "email", "password"]]
                     self.student_controller.register_student(details[0], details[1], details[2])
@@ -85,3 +86,21 @@ class Menu:
             inpt = self.prompt_input(options)
         # If x is entered, log student out.
         self.student_controller.logout()
+
+    def student_logged_in_menu(self):
+        curr_student = self.student_controller.logged_in_student
+        options = [
+        "\n\t e: (enrol in subject)",
+        "\n\t u: (unenrol in subject)",
+        "\n\t x: (quit application)"
+        ]
+        inpt = self.prompt_input(options)
+        while inpt != "x":
+            match inpt:
+                case "e":
+                    curr_student.enrol(self.student_controller)
+                case "u":
+                    curr_student.unenrol()
+                case _:
+                    pass
+            inpt = self.prompt_input(options)
