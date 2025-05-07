@@ -5,8 +5,8 @@ class Enrolment:
         self.assign_id(student_controller)
         self.student = student
         self.course = course
-        self.generate_mark()
-        self.generate_grade()
+        self.assign_mark()
+        self.grade = self.generate_grade()
         pass
 
     def assign_id(self, student_controller):
@@ -29,22 +29,23 @@ class Enrolment:
             new_id = "0" + new_id
         self.id = new_id
 
-    def generate_mark(self):
-        """
-        
-        """
-        self.mark = ""
-        return None
+    def assign_mark(self):
+        self.mark = randint(0, 100)
     
     def generate_grade(self):
-        self.grade = ""
-        pass
+        m = self.mark
+        if m is None:
+            raise ValueError("Error: Mark does not exist.")
+        if m >= 85:
+            return "HD"
+        elif m >= 75:
+            return "D"
+        elif m >= 65:
+            return "C"
+        elif m >= 50:
+            return "P"
+        else:
+            return "F"
 
     def get_id(self):
         return self.id
-
-    def get_mark(self):
-        return self.mark
-    
-    def get_grade(self):
-        return self.grade

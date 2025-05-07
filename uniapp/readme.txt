@@ -23,6 +23,7 @@ Enrolment Pro Max is a Python-based application designed to help students manage
 
 To run the application, execute the following command from the root directory (`FOSD`):
     ```bash
-    python uniapp/main.py
+    cd uniapp
+    python main.py
     ```
     

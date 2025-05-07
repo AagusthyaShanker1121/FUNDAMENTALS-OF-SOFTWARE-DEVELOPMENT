@@ -68,6 +68,6 @@ class Admin(Person):
         pass
 
 def load_admins():
-    credentials = pd.read_excel('uniapp/data/startup_info.xlsx', dtype=str)[['Admin', 'Admin_PW']]
+    credentials = pd.read_excel('data/startup_info.xlsx', dtype=str)[['Admin', 'Admin_PW']]
     credentials = credentials.dropna()
     return credentials

@@ -11,7 +11,7 @@ class Course:
         """
         Instantiates some courses so we don't need to enter them manually.
         """
-        return list(pd.read_excel('uniapp/data/startup_info.xlsx')['Course'])
+        return list(pd.read_excel('data/startup_info.xlsx')['Course'])
 
     def getName(self):
         return self.name

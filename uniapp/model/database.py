@@ -4,12 +4,13 @@ from model.student import Student
 from model.admin import Admin
 
 class Database:
-    db_file_path = Path('uniapp/data/Students.data')
+    db_file_path = Path('data/Students.data')
     
-    def __init__(self):
+    def __init__(self, db_file_path=db_file_path):
         self.students = {}
         self.admins = {}
         self.load_data()
+        self.db_file_path = db_file_path
 
     def load_data(self):
         """
@@ -22,7 +23,9 @@ class Database:
         if self.db_file_path.is_file():
             with open(self.db_file_path, "r") as f:
                 file_contents = f.read()
-        if file_contents and file_contents != "":
+        else:
+            file_contents = None
+        if file_contents is not None and file_contents != "":
             self.data = json.loads(file_contents)
             print(file_contents)
         else:
@@ -40,6 +43,9 @@ class Database:
         # Admin load needs to be completed.
         # for admin in self.data.get('admins', []):
         #     self.admins = [Admin.from_dict(admin)] 
+    
+    def get_data(self):
+        return self.load_data()
 
     def save_data(self):
         """
@@ -57,13 +63,17 @@ class Database:
         print("Data saved succesfully.")
         return None
 
-    def delete_data(self):
+    def delete_data(self, force=False):
         """
         Obliterates the data off the face of this earth.
         After a nice confirmation.
         """
-        confirmation = input("Are you sure you want to delete all data? (y/n): ")
-        if confirmation == "y":
+        if force:
+            confirmation = None
+        else:
+            confirmation = input("Are you sure you want to delete all data? (y/n): ")
+        
+        if confirmation == "y" or force:
             with open(self.db_file_path, "w") as f:
                 f.write("")
                 f.close()

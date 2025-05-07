@@ -68,3 +68,20 @@ class Student(Person):
 
     def get_enrolments(self):
         return self.enrolments
+    
+    def get_average_mark(self):
+        total = sum(e.get_mark() for e in self.enrolments)
+        return total / len(self.enrolments)
+
+    def get_grade(self):
+        avg = self.get_average_mark()
+        if avg >= 85:
+            return "HD"
+        elif avg >= 75:
+            return "D"
+        elif avg >= 65:
+            return "C"
+        elif avg >= 50:
+            return "P"
+        else:
+            return "F"
