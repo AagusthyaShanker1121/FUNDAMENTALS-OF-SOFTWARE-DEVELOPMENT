@@ -1,16 +1,12 @@
-from controller.student_controller import StudentController
-
+from _controller_.student_controller import StudentController
+from _controller_.admin_controller import AdminController
 class Menu:
-    def __init__(self, db):
-        """
-        The db object is required in the menu class because
-        There needs to be an intermediary object between the users input
-        and the database.
-        
-        This is the menu class atm but we could change it.
-        """
-        self.db = db
-        self.student_controller = StudentController(self.db)
+
+    def __init__(self):
+
+        # Following controllers are responsible for interacting with model and the database
+        self.student_controller = None
+        self.admin_controller = None
     
     @staticmethod
     def prompt_input(options):
@@ -34,9 +30,12 @@ class Menu:
         while inpt != "X":
             match inpt:
                 case "A":
-                    # admin_menu()
-                    pass
+                    # 
+                    admin_controller = AdminController()
+                    self.inital_admin_menu()
+
                 case "S":
+                    student_controller = StudentController()
                     self.initial_student_menu()
                     pass
                 case _:
@@ -58,6 +57,7 @@ class Menu:
         options = [
         "\n\t l: (student login)",
         "\n\t r: (register)",
+        "\n\t c: (change password)"
         "\n\t p: (show data in database TO BE REMOVED SOON)",
         "\n\t d: (delete data in database TO BE REMOVED SOON)",
         "\n\t x: (quit application)"
@@ -76,11 +76,16 @@ class Menu:
                     print(self.student_controller.get_all_students())
                 case "a":
                     pass
-                case "p":
-                    # We can delete this after, just for debugging.
-                    self.db.print_data()
-                case "d":
-                    self.db.delete_data()
+                case "c":
+                    # inpt = input("Enter Student ID or email ID: ")
+                    # self.student_controller.change_password(inpt)
+                    pass
+
+                # case "p":
+                #     # We can delete this after, just for debugging.
+                #     self.db.print_data()
+                # case "d":
+                #     self.db.delete_data()
                 case _:
                     pass
             inpt = self.prompt_input(options)
@@ -103,4 +108,48 @@ class Menu:
                     curr_student.unenrol()
                 case _:
                     pass
+            inpt = self.prompt_input(options)
+
+
+
+    def intial_admin_menu(self):
+
+        options = [
+        "\n\t l: (admin login)"
+        ]
+
+        inpt = self.prompt_input(options)
+        while inpt != "x":
+            match inpt:
+                case "l":
+                    details = [input("Enter " + x + ": ") for x in ["user name", "password"]]
+                    if self.admin_controller.login(details[0], details[1]):
+                        self.admin_logged_in_menu()
+            inpt = self.prompt_input(options)
+        
+
+    def admin_logged_in_menu(self):
+
+        curr_admin = self.admin_controller.logged_in_admin
+        options = [
+        "\n\t c: (clear entire student database)",
+        "\n\t g: (Group students by grade)",
+        "\n\t p: (Groups students by pass/fail criteria)",
+        "\n\t r: (Remove student)",
+        "\n\t s: (Show all students)"
+        ]
+        inpt = self.prompt_input(options)
+        while inpt != "x":
+            match inpt:
+                case "c":
+                    curr_admin.delete(all = True)
+                case "g":
+                    curr_admin.view_students_by_grade()
+                case "p":
+                    curr_admin.view_students_by_pass_fail()
+                case "r":
+                    inpt = input("Enter Student ID: ")
+                    curr_admin.delete(inpt)
+                case "s":
+                    curr_admin.view_all_students()
             inpt = self.prompt_input(options)

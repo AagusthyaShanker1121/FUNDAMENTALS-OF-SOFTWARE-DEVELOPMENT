@@ -1,20 +1,21 @@
 from random import randint
+from database import AdminDb
 
-class Enrolment:
-    def __init__(self, student_controller, student, course, semester, id=None):
-        self.assign_id(student_controller)
-        self.student = student
+class Enrolment():
+    def __init__(self, student_id, course, semester, enrolment_id=None):
+        self.assign_id()
+        self.student_id = student_id
         self.course = course
         self.assign_mark()
         self.grade = self.generate_grade()
         pass
 
-    def assign_id(self, student_controller):
+    def assign_id(self):
         """
         This retrieves all enrolment ids to ensure a unique id by cycling
         two nested loops, for each student, grab each enrolment id.
         """
-        all_students = student_controller.db.get_all_students()
+        all_students = AdminDb().get_all_students()
         all_enrolment_ids = []
         for curr_student in all_students.values():
             if len(curr_student.get_enrolments()) > 0:
@@ -27,7 +28,7 @@ class Enrolment:
         # Pad the new id out to 6 characters ie; 000001
         while len(new_id) < 6:
             new_id = "0" + new_id
-        self.id = new_id
+        self.enrolment_id = new_id
 
     def assign_mark(self):
         self.mark = randint(0, 100)
@@ -48,4 +49,6 @@ class Enrolment:
             return "F"
 
     def get_id(self):
-        return self.id
+        return self.enrolment_id
+
+

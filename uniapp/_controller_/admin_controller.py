@@ -1,9 +1,45 @@
-class AdminController:
-    def __init__(self, db):
-        self.db = db
+from _model_.database import AdminDb
 
-    def add_student(self, student):
-        self.db.add_student(student)
+class AdminController:
+    def __init__(self):
+        self.db = AdminDb()
+        self.logged_in_admin = None
+    
+
+    # Re-design admin login functionality 
+    def login(self, username, password) -> bool:
+        target_admin = self.db.get_admin()
+        if target_admin is None:
+            print(f"Admin Not Found or Admin credentials are invalid !")
+            return False
+        return True
+    
+    def delete(self, student_id:str, all=False):
+        """
+        Helper function to delete a particular student or a group of students.
+        
+        Parameters
+        ---
+        student_id: str
+        all=False: bool
+            If set to True deletes entire student data
+        """
+        # all sets to True so deleting entire data
+        if not all:
+            if self.db.delete_data(): 
+                print("Student Data deleted succesfully.")
+            else:
+                print("Data cannot be deleted")
+            
+        else:
+            if self.db.delete_student(student_id):
+                print("Student deleted successfully.")
+            else:
+                print("Student doesn't exists.")
+
+
+    # def add_student(self, student):
+    #     self.db.add_student(student)
 
     def view_all_students(self):
         students = self.db.get_all_students().values()

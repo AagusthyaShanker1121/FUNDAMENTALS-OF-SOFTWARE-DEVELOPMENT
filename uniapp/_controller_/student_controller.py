@@ -1,9 +1,10 @@
 import random
-from model.student import Student
+from FOSD.uniapp._model_.user.student import Student
+from _model_.database import StudentDb
 
 class StudentController:
-    def __init__(self, db):
-        self.db = db
+    def __init__(self):
+        self.db = StudentDb()
         self.logged_in_student = None
 
     def login(self, email, password):
@@ -21,6 +22,8 @@ class StudentController:
                 return False  # Expected failure: incorrect password
 
     def logout(self):
+        # end connection with database
+        self.db = None
         self.logged_in_student = None
     
     def register_student(self, name, email, password):

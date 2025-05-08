@@ -2,8 +2,8 @@ import sys, os, unittest
 # ── ① Add the project root (uniapp) to the module search path ──
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from controller.student_controller import StudentController
-from model.student import Student
+from _controller_.student_controller import StudentController
+from FOSD.uniapp._model_.user.student import Student
 
 # ── ② Lightweight mock database to simulate real DB behavior ──
 class MockDB:

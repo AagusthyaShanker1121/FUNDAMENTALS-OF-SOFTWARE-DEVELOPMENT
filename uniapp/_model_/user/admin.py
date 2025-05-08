@@ -1,14 +1,13 @@
 import pandas as pd
-from model.person import Person
+# from model.person import Person
+# from FOSD.uniapp.model.user.person import Person
+from user.person import Person
+from pathlib import Path
 
 class Admin(Person):
-    def __init__(self, name, email, password):
-        super().__init__(name, email, password) # This retains all original functions in the parents constructor class.
-        print(f"Student created! Name: {self.name}. Email: {self.email}.")
+    def __init__(self, username:str, password:str):
+        super().__init__(username, password) # This retains all original functions in the parents constructor class.
 
-    # logs in to the system
-    def login(self) -> bool:
-        pass
     
     def delete_course(self, course) -> bool:
         """
@@ -67,7 +66,8 @@ class Admin(Person):
         """
         pass
 
-def load_admins():
-    credentials = pd.read_excel('data/startup_info.xlsx', dtype=str)[['Admin', 'Admin_PW']]
-    credentials = credentials.dropna()
-    return credentials
+# def load_admins():
+#     startup_info_path = Path("FOSD")/"uniapp"/"data"/"startup_info.xlsx"
+#     credentials = pd.read_excel(startup_info_path, dtype=str)[['Admin', 'Admin_PW']]
+#     credentials = credentials.dropna()
+#     return credentials
