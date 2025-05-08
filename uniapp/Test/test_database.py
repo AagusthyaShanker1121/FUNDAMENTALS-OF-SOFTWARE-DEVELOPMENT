@@ -6,8 +6,8 @@ from pathlib import Path
 uniapp_root = Path(__file__).resolve().parents[1]
 sys.path.append(str(uniapp_root))
 
-from FOSD.uniapp._model_.user.student import Student
-from _model_.database import Database
+from FOSD.uniapp.model.student import Student
+from FOSD.uniapp.data.database import Database
 
 class DatabaseTest(unittest.TestCase):
     def setUp(self):

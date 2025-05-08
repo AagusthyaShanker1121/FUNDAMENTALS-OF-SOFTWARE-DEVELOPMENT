@@ -1,6 +1,7 @@
 import random
-from FOSD.uniapp._model_.user.student import Student
-from _model_.database import StudentDb
+from model.student import Student
+from data.database import StudentDb
+from data.database import AdminDb     #Importing because admin Db has access to all students records
 
 class StudentController:
     def __init__(self):
@@ -21,6 +22,7 @@ class StudentController:
                 print("Error: Incorrect password.")
                 return False  # Expected failure: incorrect password
 
+
     def logout(self):
         # end connection with database
         self.db = None
@@ -39,7 +41,7 @@ class StudentController:
     
     def validate_unique_email(self, email):
         # Validate email does not exist.
-        all_students = self.db.get_all_students()
+        all_students = AdminDb().get_all_students()
         if email in [student.get_email() for student in all_students.values()]:
             raise ValueError("Email already exists.")
 
@@ -48,12 +50,12 @@ class StudentController:
         This function works well as an instance method since it uses the database.
         """
         id = random.randint(1, int(1e6 - 1))
-        while id in self.db.students.keys():
+        all_students_id = AdminDb().get_all_students().keys()
+        while id in all_students_id:
             # Generate a new int if id already exists
             id = random.randint(1, int(1e6 - 1))
         id = str(id)
         while len(id) < 6:
             id = "0" + id
         return id
-
 

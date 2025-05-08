@@ -1,4 +1,4 @@
-from _model_.database import AdminDb
+from data.database import AdminDb
 
 class AdminController:
     def __init__(self):
@@ -6,7 +6,6 @@ class AdminController:
         self.logged_in_admin = None
     
 
-    # Re-design admin login functionality 
     def login(self, username, password) -> bool:
         target_admin = self.db.get_admin()
         if target_admin is None:

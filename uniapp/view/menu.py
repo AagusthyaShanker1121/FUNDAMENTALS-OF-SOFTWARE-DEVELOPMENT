@@ -31,11 +31,11 @@ class Menu:
             match inpt:
                 case "A":
                     # 
-                    admin_controller = AdminController()
+                    self.admin_controller = AdminController()
                     self.inital_admin_menu()
 
                 case "S":
-                    student_controller = StudentController()
+                    self.student_controller = StudentController()
                     self.initial_student_menu()
                     pass
                 case _:
@@ -57,9 +57,7 @@ class Menu:
         options = [
         "\n\t l: (student login)",
         "\n\t r: (register)",
-        "\n\t c: (change password)"
-        "\n\t p: (show data in database TO BE REMOVED SOON)",
-        "\n\t d: (delete data in database TO BE REMOVED SOON)",
+        "\n\t c: (change password)",
         "\n\t x: (quit application)"
         ]
         inpt = self.prompt_input(options)
@@ -72,20 +70,10 @@ class Menu:
                 case "r":
                     details = [input("Enter " + x + ": ") for x in ["name", "email", "password"]]
                     self.student_controller.register_student(details[0], details[1], details[2])
-                case "s":
-                    print(self.student_controller.get_all_students())
-                case "a":
-                    pass
                 case "c":
                     # inpt = input("Enter Student ID or email ID: ")
                     # self.student_controller.change_password(inpt)
                     pass
-
-                # case "p":
-                #     # We can delete this after, just for debugging.
-                #     self.db.print_data()
-                # case "d":
-                #     self.db.delete_data()
                 case _:
                     pass
             inpt = self.prompt_input(options)
@@ -105,7 +93,7 @@ class Menu:
                 case "e":
                     curr_student.enrol(self.student_controller)
                 case "u":
-                    curr_student.unenrol()
+                    curr_student.unenrol(self.student_controller)
                 case _:
                     pass
             inpt = self.prompt_input(options)

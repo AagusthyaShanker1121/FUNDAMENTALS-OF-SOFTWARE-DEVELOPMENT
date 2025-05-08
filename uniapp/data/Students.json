@@ -1,10 +1,18 @@
-{"students": 
+{
+    "students": 
     [
         {
             "id": "785203", 
             "name": "sam", 
             "email": "sam@university.com", 
             "password": "123"
+        }
+    ],
+
+    "enrolments":
+    [
+        {
+            "id" : 
         }
     ]
 }

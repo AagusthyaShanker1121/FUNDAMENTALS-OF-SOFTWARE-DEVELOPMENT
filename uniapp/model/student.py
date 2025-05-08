@@ -2,13 +2,11 @@
 # from model.enrolment import Enrolment
 # from model.course import Course
 
-
-# from _model_.enrolment import Enrolment
-from FOSD.uniapp._model_.enrolment import Enrolment
-from FOSD.uniapp._model_.course import Course
 from random import randint
-from FOSD.uniapp._model_.user.person import Person
-from user.person import Person
+from person import Person
+from enrolment import Enrolment
+from course import Course
+
 
 
 class Student(Person):
@@ -54,8 +52,7 @@ class Student(Person):
                 while self.enrolments is None or (courses[course_idx] in [curr_enrol.course for curr_enrol in self.enrolments]):
                     course_idx = randint(0, len(courses)-1)
                 new_enrolment = Enrolment(
-                    student=self, 
-                    student_controller=student_controller,
+                    student_id=self.id, 
                     course=courses[course_idx], 
                     semester=randint(1, 2)
                     )
@@ -75,8 +72,8 @@ class Student(Person):
         rand_idx = randint(0, len(self.enrolments)-1)
         print(f"Course unenrolled: {self.enrolments[rand_idx].course}")
         self.enrolments.pop(rand_idx)
-        return self.enrolments
         # student_controller.db.update_enrollment(self.enrollments)
+        return self.enrolments
 
     def get_enrolments(self):
         return self.enrolments
@@ -97,4 +94,3 @@ class Student(Person):
             return "P"
         else:
             return "F"
-

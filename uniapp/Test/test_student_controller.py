@@ -3,7 +3,7 @@ import sys, os, unittest
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from _controller_.student_controller import StudentController
-from FOSD.uniapp._model_.user.student import Student
+from FOSD.uniapp.model.student import Student
 
 # ── ② Lightweight mock database to simulate real DB behavior ──
 class MockDB:

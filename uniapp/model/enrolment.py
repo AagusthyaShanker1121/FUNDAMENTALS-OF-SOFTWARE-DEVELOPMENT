@@ -1,5 +1,5 @@
 from random import randint
-from database import AdminDb
+from data.database import AdminDb
 
 class Enrolment():
     def __init__(self, student_id, course, semester, enrolment_id=None):
